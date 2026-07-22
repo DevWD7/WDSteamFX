@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WDSteam - Steam Multi Currency
 // @namespace    https://github.com/DevWD7
-// @version      5.5
+// @version      1.0
 // @description  Converts Steam prices (UAH, TRY, ARS, USD) to SAR automatically on Steam pages.
 // @author       WDOX
 // @match        https://store.steampowered.com/*
