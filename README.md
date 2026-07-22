@@ -10,9 +10,11 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-Chrome%20%7C%20Tampermonkey%20%7C%20Steam-orange)
 
+
+
+
 محول أسعار **Steam** إلى **الريال السعودي (SAR)**.
 
-WDSteam هي إضافة لمتصفح **Chrome** تقوم بتحويل أسعار متجر Steam وصفحات المجتمع من العملات التالية إلى **الريال السعودي** بشكل تلقائي:
 
 - 🇺🇦 الهريفنيا الأوكرانية (UAH)
 
@@ -26,10 +28,10 @@ WDSteam هي إضافة لمتصفح **Chrome** تقوم بتحويل أسعار
 
 - 🌐 متصفح Chrome والمتصفحات المبنية على Chromium.
 
-- 🐵 Tampermonkey.
+-  Tampermonkey🐵
 
-- 🖥️ عميل Steam عبر Millennium Installer.
-
+  
+- 🖥️ يعمل مع برنامج Steam عبر Millennium Installer.
 ---
 
 ## ✨ المميزات
@@ -44,7 +46,21 @@ WDSteam هي إضافة لمتصفح **Chrome** تقوم بتحويل أسعار
 
 - اكتشاف الأسعار الجديدة تلقائياً أثناء تصفح Steam.
 
-- خفيفة وسريعة ولا تؤثر على أداء المتصفح.
+- خفيفة وسريعة ولا تؤثر على أداء Steam.
+
+---
+
+
+## 📸 صور من الإضافة
+
+
+<p align="center">
+  
+  <img src="screenshots/app-preview1.png" width="40%"/>
+  <img src="screenshots/app-preview2.png" width="45%"/>
+ 
+</p>
+
 
 ---
 
@@ -96,15 +112,18 @@ WDSteam هي إضافة لمتصفح **Chrome** تقوم بتحويل أسعار
 
 5. بعد تثبيت إضافة **Extensions**، ثبّت WDSteam وسيعمل داخل عميل Steam مباشرة.
 
+
+
+
 <p align="center">
-  <img src="screenshots/millennium-install1.png" width="45%"/>
-  <img src="screenshots/millennium-install2.png" width="45%"/>
-  <img src="screenshots/millennium-install3.png" width="45%"/>
-  <img src="screenshots/millennium-install4.png" width="45%"/>
-  <img src="screenshots/millennium-install5.png" width="45%"/>
-  <img src="screenshots/millennium-install6.png" width="45%"/>
-  <img src="screenshots/millennium-install7.png" width="45%"/>
-  <img src="screenshots/millennium-install8.png" width="45%"/>
+  <img src="screenshots/millennium-install1.png" width="50%"/>
+  <img src="screenshots/millennium-install2.png" width="50%"/>
+  <img src="screenshots/millennium-install3.png" width="50%"/>
+  <img src="screenshots/millennium-install4.png" width="50%"/>
+  <img src="screenshots/millennium-install5.png" width="89%"/>
+  <img src="screenshots/millennium-install6.png" width="50%"/>
+  <img src="screenshots/millennium-install7.png" width="50%"/>
+  <img src="screenshots/millennium-install8.png" width="50%"/>
 </p>
 
 > الصور أعلاه توضح خطوات تثبيت إضافة **Extensions** داخل إعدادات Millennium وإدخال الكود `788ed8554492`.
