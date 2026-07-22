@@ -3,7 +3,7 @@
 // @namespace    https://github.com/DevWD7
 // @version      5.5
 // @description  Converts Steam prices (UAH, TRY, ARS, USD) to SAR automatically on Steam pages.
-// @author       WDOX (maintainer) — original idea & first version by BAKHSHAWI999 (https://gist.github.com/BAKHSHAWI999)
+// @author       WDOX
 // @match        https://store.steampowered.com/*
 // @match        https://steamcommunity.com/*
 // @connect      hexarate.paikama.co
@@ -19,10 +19,7 @@
 (function () {
     'use strict';
 
-    const SAR_RATE = 3.75; // SAR is officially pegged to USD at a fixed rate
-    // Last-resort numbers, only used if BOTH live sources fail and there is
-    // no usable cache yet. These are approximate and get replaced by a live
-    // fetch as soon as one succeeds.
+    const SAR_RATE = 3.75;
     const DEFAULT_RATES = { UAH: 41.5, TRY: 33.5, ARS: 1000 };
     const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -54,11 +51,6 @@
         return (amount / fromRate) * SAR_RATE;
     }
 
-    // ---- Rate fetching / caching ----
-    // Three independent free, no-key sources, tried in order. If one is down,
-    // slow, or returns bad data, we automatically fall through to the next
-    // instead of silently using stale/wrong numbers.
-
     function gmGet(url) {
         return new Promise((resolve) => {
             GM_xmlhttpRequest({
@@ -79,9 +71,6 @@
     }
 
     async function fetchFromHexarate() {
-        // https://hexarate.paikama.co/api/rates/USD/UAH/latest — direct pair
-        // lookup, no key, no rate limits. We need USD->UAH, USD->TRY,
-        // USD->ARS (i.e. "how many units of X per 1 USD"), fetched in parallel.
         const pairs = ["UAH", "TRY", "ARS"];
         const results = await Promise.all(
             pairs.map((code) => gmGet(`https://hexarate.paikama.co/api/rates/USD/${code}/latest`))
@@ -97,7 +86,6 @@
     }
 
     async function fetchFromExchangerateFun() {
-        // https://api.exchangerate.fun/latest?base=USD — free, no key, hourly updates
         const data = await gmGet("https://api.exchangerate.fun/latest?base=USD");
         if (data && data.rates) {
             return { UAH: data.rates.UAH, TRY: data.rates.TRY, ARS: data.rates.ARS };
@@ -106,7 +94,6 @@
     }
 
     async function fetchFromOpenErApi() {
-        // https://open.er-api.com/v6/latest/USD
         const data = await gmGet("https://open.er-api.com/v6/latest/USD");
         if (data && data.result === "success" && data.rates) {
             return { UAH: data.rates.UAH, TRY: data.rates.TRY, ARS: data.rates.ARS };
@@ -115,9 +102,6 @@
     }
 
     function ratesLookSane(rates) {
-        // Basic sanity check so a malformed/garbage response never gets used —
-        // if a source returns zero/negative/missing numbers, treat it as a fail
-        // and move on to the next source instead of showing a broken price.
         return !!(rates && rates.UAH > 0 && rates.TRY > 0 && rates.ARS > 0);
     }
 
@@ -142,7 +126,7 @@
             return openErApi;
         }
 
-        return null; // all three sources failed
+        return null;
     }
 
     async function getRates() {
@@ -159,19 +143,13 @@
             return fresh;
         }
 
-        // Both sources failed — keep using cache if we have one, else defaults
         return cachedRates || DEFAULT_RATES;
     }
 
-    const DEBUG = true; // set to false once the issue is fixed
+    const DEBUG = true;
 
     function startConverter(rates) {
 
-        // Steam's newer price widgets (special promo boxes, bundle prices, etc.)
-        // are sometimes rendered inside Shadow DOM. A plain document.evaluate()
-        // XPath query can't see past a shadow boundary, so we recursively collect
-        // every root (the document itself, plus any open shadow roots inside it)
-        // and scan each one separately.
         function collectRoots(root, acc) {
             acc.push(root);
             const all = root.querySelectorAll ? root.querySelectorAll('*') : [];
@@ -232,8 +210,6 @@
                             if (sarVal === null || isNaN(sarVal)) continue;
                             const sar = sarVal.toFixed(2);
 
-                            // Plain inline text placed right next to the price,
-                            // on the same line — bold, no background, no flag.
                             const span = document.createElement('span');
                             span.innerHTML = `<b>${sar} SAR</b>`;
                             span.style.marginLeft = '4px';
@@ -244,7 +220,7 @@
                             parent.setAttribute('data-sar', 'true');
                             stats.converted++;
                             matchedThisNode = true;
-                            break; // this text node is handled, move to the next one
+                            break;
                         }
                     }
 
