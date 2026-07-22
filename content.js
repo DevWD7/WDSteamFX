@@ -4,7 +4,7 @@
 (function () {
     'use strict';
 
-    const SAR_RATE = 3.75; // SAR is officially pegged to USD at a fixed rate
+    const SAR_RATE = 3.75;
 
     const CURRENCIES = [
         { code: "UAH", symbol: "₴", regex: /([\d][\d.,\s\u00A0]*)\s*₴|₴\s*([\d][\d.,\s\u00A0]*)/, locale: "eu" },
@@ -34,15 +34,10 @@
         return (amount / fromRate) * SAR_RATE;
     }
 
-    const DEBUG = true; // set to false once the issue is fixed
+    const DEBUG = true;
 
     function startConverter(rates) {
 
-        // Steam's newer price widgets (special promo boxes, bundle prices, etc.)
-        // are sometimes rendered inside Shadow DOM. A plain document.evaluate()
-        // XPath query can't see past a shadow boundary, so we recursively collect
-        // every root (the document itself, plus any open shadow roots inside it)
-        // and scan each one separately.
         function collectRoots(root, acc) {
             acc.push(root);
             const all = root.querySelectorAll ? root.querySelectorAll('*') : [];
@@ -103,8 +98,6 @@
                             if (sarVal === null || isNaN(sarVal)) continue;
                             const sar = sarVal.toFixed(2);
 
-                            // Plain inline text placed right next to the price,
-                            // on the same line — bold, no background, no flag.
                             const span = document.createElement('span');
                             span.innerHTML = `<b>${sar} SAR</b>`;
                             span.style.marginLeft = '4px';
@@ -115,7 +108,7 @@
                             parent.setAttribute('data-sar', 'true');
                             stats.converted++;
                             matchedThisNode = true;
-                            break; // this text node is handled, move to the next one
+                            break;
                         }
                     }
 
@@ -143,7 +136,6 @@
         setInterval(convertNodes, 2000);
     }
 
-    // Ask the background service worker for the current (cached/refreshed) rates
     chrome.runtime.sendMessage({ type: "WDSTEAM_GET_RATES" }, (response) => {
         const rates = (response && response.rates) || { UAH: 41.5, TRY: 33.5, ARS: 1000 };
         startConverter(rates);
