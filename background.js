@@ -15,7 +15,6 @@ async function fetchAndStoreRates() {
             await chrome.storage.local.set({ fx_rates: rates, last_update: Date.now() });
         }
     } catch (e) {
-        // Keep whatever is already cached (or defaults) on failure
         const stored = await chrome.storage.local.get(["fx_rates"]);
         if (!stored.fx_rates) {
             await chrome.storage.local.set({ fx_rates: DEFAULT_RATES, last_update: Date.now() });
@@ -46,13 +45,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     }
 });
 
-// Content scripts ask for fresh rates on load in case the alarm hasn't fired yet
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message && message.type === "WDSTEAM_GET_RATES") {
         ensureRatesFresh().then(async () => {
             const stored = await chrome.storage.local.get(["fx_rates"]);
             sendResponse({ rates: stored.fx_rates || DEFAULT_RATES });
         });
-        return true; // keep the message channel open for the async response
+        return true;
     }
 });
