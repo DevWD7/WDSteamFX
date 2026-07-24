@@ -1,6 +1,3 @@
-// WDSteam - Steam Multi Currency Converter (content script)
-// Converts UAH / TRY / ARS / USD prices found on Steam pages into SAR
-
 (function () {
     'use strict';
 
@@ -10,6 +7,8 @@
         { code: "UAH", symbol: "₴", regex: /([\d][\d.,\s\u00A0]*)\s*₴|₴\s*([\d][\d.,\s\u00A0]*)/, locale: "eu" },
         { code: "TRY", symbol: "₺", regex: /([\d][\d.,\s\u00A0]*)\s*(?:₺|TL)\b|(?:₺|TL)\s*([\d][\d.,\s\u00A0]*)/, locale: "eu" },
         { code: "ARS", symbol: "ARS$", regex: /(?:ARS\$|AR\$)\s*([\d][\d.,\s\u00A0]*)/, locale: "eu" },
+        { code: "CNY", symbol: "¥", regex: /([\d][\d,]*\.?\d*)\s*¥|¥\s*([\d][\d,]*\.?\d*)/, locale: "us" },
+        { code: "PKR", symbol: "Rs", regex: /(?:Rs\.?|₨)\s*([\d][\d,]*\.?\d*)/, locale: "us" },
         { code: "USD", symbol: "$", regex: /(?:^|\s)\$\s*([\d][\d,]*\.?\d*)|US\$\s*([\d][\d,]*\.?\d*)/, locale: "us" },
     ];
 
@@ -119,9 +118,9 @@
             }
 
             if (DEBUG) {
-                console.log('[WDSteam debug]', stats);
+                console.log('[WDSteamFx debug]', stats);
                 if (stats.unmatchedSamples.length) {
-                    console.log('[WDSteam debug] text containing a currency symbol but NOT converted:', stats.unmatchedSamples);
+                    console.log('[WDSteamFx debug] text containing a currency symbol but NOT converted:', stats.unmatchedSamples);
                 }
             }
         }
@@ -136,8 +135,8 @@
         setInterval(convertNodes, 2000);
     }
 
-    chrome.runtime.sendMessage({ type: "WDSTEAM_GET_RATES" }, (response) => {
-        const rates = (response && response.rates) || { UAH: 41.5, TRY: 33.5, ARS: 1000 };
+    chrome.runtime.sendMessage({ type: "WDSTEAMFX_GET_RATES" }, (response) => {
+        const rates = (response && response.rates) || { UAH: 41.5, TRY: 33.5, ARS: 1000, CNY: 7.2, PKR: 278 };
         startConverter(rates);
     });
 
