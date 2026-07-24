@@ -1,9 +1,9 @@
 
 {
   "manifest_version": 3,
-  "name": "WDSteam - Steam Multi Currency",
-  "version": "1.0",
-  "description": "Converts Steam prices (UAH, TRY, ARS, USD) to SAR automatically on Steam pages.",
+  "name": "WDSteamFx - Steam Multi Currency",
+  "version": "1.0.1",
+  "description": "Converts Steam prices (UAH, TRY, ARS, CNY, PKR, USD) to SAR automatically on Steam pages.",
   "author": "WDOX",
   "icons": {
     "16": "icons/icon16.png",
