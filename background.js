@@ -1,9 +1,6 @@
-// WDSteam - background service worker
-// Fetches exchange rates once a day and caches them in chrome.storage.local
-
 const API_URL = "https://open.er-api.com/v6/latest/USD";
-const DEFAULT_RATES = { UAH: 41.5, TRY: 33.5, ARS: 1000 };
-const REFRESH_ALARM = "wdsteam-refresh-rates";
+const DEFAULT_RATES = { UAH: 41.5, TRY: 33.5, ARS: 1000, CNY: 7.2, PKR: 278 };
+const REFRESH_ALARM = "wdsteamfx-refresh-rates";
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 async function fetchAndStoreRates() {
@@ -11,7 +8,13 @@ async function fetchAndStoreRates() {
         const response = await fetch(API_URL);
         const data = await response.json();
         if (data && data.rates) {
-            const rates = { UAH: data.rates.UAH, TRY: data.rates.TRY, ARS: data.rates.ARS };
+            const rates = {
+                UAH: data.rates.UAH,
+                TRY: data.rates.TRY,
+                ARS: data.rates.ARS,
+                CNY: data.rates.CNY,
+                PKR: data.rates.PKR,
+            };
             await chrome.storage.local.set({ fx_rates: rates, last_update: Date.now() });
         }
     } catch (e) {
@@ -46,7 +49,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message && message.type === "WDSTEAM_GET_RATES") {
+    if (message && message.type === "WDSTEAMFX_GET_RATES") {
         ensureRatesFresh().then(async () => {
             const stored = await chrome.storage.local.get(["fx_rates"]);
             sendResponse({ rates: stored.fx_rates || DEFAULT_RATES });
