@@ -95,7 +95,14 @@
 </p>
 
 
----
+
+
+
+## 🎥 فيديو توضيحي
+
+http://github-production-user-asset-6210df.s3.amazonaws.com/25715745/635219199-86a55b20-3b1b-4ecf-8c80-655b72f2e993.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260813%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260813T020057Z&X-Amz-Expires=300&X-Amz-Signature=5c5b9adaca5cf1fdcb51ed9e9695e4b1a95394c63f4152e679b87ecda198b826&X-Amz-SignedHeaders=host&response-content-type=video%2Fmp4
+
+
 
 # 📥 التثبيت
 
